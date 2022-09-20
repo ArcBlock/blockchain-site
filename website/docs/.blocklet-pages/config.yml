@@ -1,0 +1,161 @@
+name: Blockchain Docs
+title: Blockchain Docs
+description: This is Blockchain Docs Site, powered by Blocklet Page
+github: https://github.com/arcblock/blockchain-site
+theme: docs
+themeConfig:
+  sidebar:
+    en:
+      - text: Welcome
+        link: /
+      - text: Frequently Asked Questions
+        link: /faq
+      - text: Quick Start
+        items:
+          - text: Setup Node.js
+            link: /quick-start/setup-nodejs
+          - text: Send first transaction
+            link: /quick-start/first-tx
+      - text: How-to Guides
+        items:
+          - text: Setup Test Chain
+            link: /how-to/setup-test-chain
+          - text: Create Account
+            link: /how-to/create-account
+          - text: Query Accounts
+            link: /how-to/query-account
+          - text: Send Transactions
+            link: /how-to/send-tx
+          - text: Query Transactions
+            link: /how-to/query-tx
+          - text: Create Token
+            link: /how-to/create-token
+          - text: Transfer Token
+            link: /how-to/transfer-token
+          - text: Create NFT
+            link: /how-to/create-nft
+          - text: Update NFT
+            link: /how-to/update-nft
+          - text: Transfer NFT
+            link: /how-to/transfer-nft
+          - text: Query NFT
+            link: /how-to/query-nft
+          - text: Create NFT Factory
+            link: /how-to/create-nft-factory
+          - text: Acquire from NFT Factory
+            link: /how-to/acquire-nft-factory
+          - text: Mint from NFT Factory
+            link: /how-to/mint-nft-factory
+      - text: Reference Guides
+        items:
+          - text: Working with Crypto
+            link: /reference/crypto
+          - text: Working with Wallets
+            link: /reference/wallets
+          - text: Working with Transactions
+            link: /reference/txs
+          - text: Working with Tokens
+            link: /reference/tokens
+          - text: Working with NFTs
+            link: /reference/nfts
+          - text: Working with Stakes
+            link: /reference/stakes
+          - text: Work with Verifiable Credentials
+            link: /reference/vcs
+      - text: Conceptual Guides
+        items:
+          - text: Understanding DIDs
+            link: /conceptual/did
+          - text: Understanding Wallets and Accounts
+            link: /conceptual/wallets
+          - text: Understanding Transactions
+            link: /conceptual/transactions
+          - text: Understanding Tokens
+            link: /conceptual/tokens
+          - text: Understanding NFTs
+            link: /conceptual/nfts
+          - text: Understanding Verifiable Credentials
+            link: /conceptual/vcs
+      - text: ToolKit
+        items:
+          - text: Blockchain Explorer
+            link: /toolkit/explorer
+          - text: File Chain Manager
+            link: /toolkit/file-chain
+    zh:
+      - text: 欢迎
+        link: /
+      - text: 常见问题
+        link: /faq
+      - text: 快速开始
+        items:
+          - text: 安装 Node.js
+            link: /quick-start/setup-nodejs
+          - text: 发送第一笔交易
+            link: /quick-start/first-tx
+      - text: 操作指南
+        items:
+          - text: 启动测试链
+            link: /how-to/setup-test-chain
+          - text: 创建账户
+            link: /how-to/create-account
+          - text: 查询账户
+            link: /how-to/query-account
+          - text: 发送交易
+            link: /how-to/send-tx
+          - text: 查询交易
+            link: /how-to/query-tx
+          - text: 创建代币
+            link: /how-to/create-token
+          - text: 发送代币
+            link: /how-to/transfer-token
+          - text: 创建 NFT
+            link: /how-to/create-nft
+          - text: 更新 NFT
+            link: /how-to/update-nft
+          - text: 发送 NFT
+            link: /how-to/transfer-nft
+          - text: 查询 NFT
+            link: /how-to/query-nft
+          - text: 创建 NFT 工厂
+            link: /how-to/create-nft-factory
+          - text: 从 NFT Factory 购买
+            link: /how-to/acquire-nft-factory
+          - text: 从 NFT Factory 铸造
+            link: /how-to/mint-nft-factory
+      - text: 参考文档
+        items:
+          - text: 加密相关
+            link: /reference/crypto
+          - text: 使用钱包
+            link: /reference/wallets
+          - text: 签名和发送交易
+            link: /reference/txs
+          - text: 使用代币资产
+            link: /reference/tokens
+          - text: 使用 NFT 资产
+            link: /reference/nfts
+          - text: 使用资产质押
+            link: /reference/stakes
+          - text: 使用可验证声明(VC)
+            link: /reference/vcs
+      - text: 概念指南
+        items:
+          - text: 理解 DIDs
+            link: /conceptual/did
+          - text: 理解钱包和账户
+            link: /conceptual/wallets
+          - text: 理解交易
+            link: /conceptual/transactions
+          - text: 理解代币
+            link: /conceptual/tokens
+          - text: 理解NFTs
+            link: /conceptual/nfts
+          - text: 理解可验证声明（VC）
+            link: /conceptual/vcs
+      - text: 工具箱
+        items:
+          - text: 区块链浏览器
+            link: /toolkit/explorer
+          - text: 测试链管理器
+            link: /toolkit/file-chain

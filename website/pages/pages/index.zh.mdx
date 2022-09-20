@@ -1,0 +1,32 @@
+---
+layout: "my-layout"
+blocks:
+  - name: SectionHero
+    variant: stack
+    title: !md |
+      **ArcBlock Blockchain**
+    description: !md |
+      服务 ArcBlock 生态的开放、快速、安全和可扩展的计费层。
+    actions:
+      - name: SmartLink
+        to: /docs
+        children:
+          name: Button
+          variant: contained
+          size: large
+          children: 现在开始
+  - name: SectionFeatureList
+    center: true
+    title: !md |
+      Features
+    list:
+      - title: 万物皆有 DID
+        description: 区块链上的每个实体都有DID、账户、代币、NFT、工厂、质押等标识。
+        icon: logos/did.svg
+      - title: 多代币支持
+        description: 你可以在区块链上发行多个代币，在代币之间进行交换，甚至通过 ArcBridge 在区块链上移动代币。
+        icon: logos/token.svg
+      - title: 完整的 NFT 支持
+        description: 在链上创建/更新/转移/铸币和获取 NFT 很容易，你可以通过 NFT Display 和 NFT Endpoint 同时拥有不可变性和灵活性。
+        icon: logos/nft.svg
+---

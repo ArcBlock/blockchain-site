@@ -1,0 +1,8 @@
+name: Blockchain
+title: Blockchain
+description: Decentralized store for blocklets
+github: https://github.com/arcblock/blockchain-site
+theme: arcblock
+themeConfig:
+  colors:
+    primary: '#1DC1C7'

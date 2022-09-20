@@ -1,0 +1,21 @@
+{
+  "name": "blockchain-docs",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "blocklet dev",
+    "dev:child": "blocklet dev --component --app-did=z8ia3mvM5b8cjFbCwPADZj1nhQkWE9iRXYBMm --mount-point=/docs",
+    "start": "xmark start",
+    "build": "xmark build --base=/docs",
+    "clean": "rm -rf .blocklet",
+    "bundle": "npm run clean && npm run build && blocklet bundle --create-release",
+    "deploy": "npm run bundle && blocklet deploy .blocklet/bundle",
+    "deploy:child": "npm run bundle && blocklet deploy .blocklet/bundle --app-did=z8ia3mvM5b8cjFbCwPADZj1nhQkWE9iRXYBMm --mount-point=/docs",
+    "upload": "npm run bundle && blocklet upload .blocklet/release/blocklet.json"
+  },
+  "devDependencies": {
+    "@xmark/cli": "^2.4.47",
+    "@xmark/client": "^2.4.47",
+    "@xmark/theme-docs": "^2.4.47"
+  }
+}

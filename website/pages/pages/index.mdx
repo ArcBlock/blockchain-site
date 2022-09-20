@@ -1,0 +1,32 @@
+---
+layout: 'my-layout'
+blocks:
+  - name: SectionHero
+    variant: stack
+    title: !md |
+      **ArcBlock Blockchain**
+    description: !md |
+      The open, fast, secure and extensible billing layer for ArcBlock ecosystem.
+    actions:
+      - name: SmartLink
+        to: /docs
+        children:
+          name: Button
+          variant: contained
+          size: large
+          children: Get Started
+  - name: SectionFeatureList
+    center: true
+    title: !md |
+      Features
+    list:
+      - title: DID for Everything
+        description: Every entity on the blockchain are identified with DID, Account, Token, NFT, Factory, Staking and more.
+        icon: logos/did.svg
+      - title: Multiple Token Support
+        description: You can issue multiple tokens on the blockchain, swap between the tokens and even move tokens across blockchains through ArcBridge.
+        icon: logos/token.svg
+      - title: Complete NFT Support
+        description: It's easy to create/update/transfer/mint and acquire NFTs on the chain, you can have both immutable and flexibility with NFT Display and NFT Endpoint.
+        icon: logos/nft.svg
+---
