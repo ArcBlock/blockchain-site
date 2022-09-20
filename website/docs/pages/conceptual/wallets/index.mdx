@@ -3,12 +3,29 @@ layout: "documentation"
 title: Wallets and Accounts
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+## What is Wallet?
 
-- Wallet: used to sign transaction
-  - SK, PK, Address
-  - Types
-- Account: data entry on the ledger
-  - can hold tokens and NFTs
+![](./images/wallet.png)
+
+- A wallet usually have a secret key (SK), a public key (PK) and an address ([DID](../did)).
+- A wallet can be used to sign a [transaction](../transactions) or other format of message.
+- A wallet can be used to verify a signed message.
+- If you have the secret key you own the corresponding wallet.
+
+## What is Account?
+
+- An account is a data entry that exist in the blockchain ledger, each account is identified by a unique address ([DID](../did)).
+- An account can own many tokens.
+- An account can own many NFTs.
+- An account can be migrated to a new account.
+- A user can have as many accounts as they would like, this is usually achieved with [DID Wallet](https://didwallet.io).
+- A user need at least one account before they can send and receive transactions on the blockchain.
+
+## Relationship between Wallet and Account
+
+- Most accounts are backed by a wallet (secret key).
+- Ownership of the wallet secret key means ownership of funds in the account, if you lose the secret key you lose the funds.
+
+:::Alert{type=success}
+Please note that sometimes the terms account and wallet are used interchangeably in this documentation.
+:::
