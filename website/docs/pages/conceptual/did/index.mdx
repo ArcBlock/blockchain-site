@@ -1,11 +1,160 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: Understanding DIDs
 ---
 
-:::Alert
-this page is a draft and need to be updated
+## What is DID?
+
+DID is a unique identity address calculated from a set of credentials, and we extend DID as unique identifiers for everything in ArcBlock Ecosystem, such as:
+
+- [Account](../wallets)
+- [Token](../tokens)
+- [NFT](../nfts)
+- [NFT Factory](../nfts)
+- Stake
+- Delegation
+- [Blocklet](https://developer.blocklet.io/docs/en/reference/blocklet-spec#DID)
+- Server
+
+:::Alert{type=success}
+Please note that sometimes the terms DID and address are used interchangeably in this documentation.
 :::
 
-- Everything have a DID
-- Info encoded in an DID
+## How to Create DID?
+
+### DID Notation
+
+A typical DID provided by ArcBlock looks like this:
+
+```
+did:abt:z1muQ3xqHQK2uiACHyChikobsiY5kLqtShA
+  DID            DID String
+schema
+```
+
+### DID Type
+
+DID type is the first two bytes of the DID string's binary format. It contains three sections:
+
+1. The first six bits are the `RoleType` of DID, e.g., `account` = 0
+2. The following 5 bits denote the `KeyType`, algorithm to convert secret key to public key, e.g., `ED25519` = 0
+3. The latter 5 bits represent the `HashType` function to calculate the hash of the public key, e.g., `sha3` = 1
+
+So DID type bytes `0x0C01` can be interpreted as follows:
+
+```
++-------------+-----------+------------+
+| 000011      | 00000     | 00001      |
++-------------+-----------+------------+
+| application | ed25519   | sha3       |
++-------------+-----------+------------+
+```
+
+See [appendix](#appendix) for the full list of `RoleType`, `KeyType` and `HashType`.
+
+### DID Algorithm
+
+It's calculated with following algorithm:
+
+- Step 1: Choose the _RoleType_, _KeyType_ and _Hash_ from above, let's use `application`, `ed25519` and `sha3` in this example.
+- Step 2: Choose a secret key randomly, e.g.
+  ```
+  D67C071B6F51D2B61180B9B1AA9BE0DD0704619F0E30453AB4A592B036EDE644E4852B7091317E3622068E62A5127D1FB0D4AE2FC50213295E10652D2F0ABFC7
+  ```
+- Step 3: Generate the public key of this secret key by using the _KeyType_. So we can get public key
+  ```
+  E4852B7091317E3622068E62A5127D1FB0D4AE2FC50213295E10652D2F0ABFC7
+  ```
+- Step 4: Get the _Hash_ of the public key
+  ```
+  EC8E681514753FE5955D3E8B57DAEC9D123E3DB146BDDFC3787163F77F057C27
+  ```
+- Step 5: Take the first 20 bytes of the public key hash
+  ```
+  EC8E681514753FE5955D3E8B57DAEC9D123E3DB1
+  ```
+- Step 6: Add the DID type bytes `0x0C01` in front of the hash of Step 4
+  ```
+  0C01EC8E681514753FE5955D3E8B57DAEC9D123E3DB1
+  ```
+- Step 7: Get the hash of the extended hash in Step 6
+  ```
+  42CD815145538F8003586C880AF94418341F9C4B8FA0394876553F8A952C7D03
+  ```
+- Step 8: Take the first 4 bytes in step 7
+  ```
+  42CD8151
+  ```
+- Step 9: Append the 4 bytes in step 8 to the extended hash in step 6. This is the binary DID string
+  ```
+  0C01EC8E681514753FE5955D3E8B57DAEC9D123E3DB142CD8151
+  ```
+- Step 10: Encode the binary value by using the Bitcoin Base58 method. Note, we are using IPFS's [multibase](https://github.com/multiformats/multibase) to encode as `base58_btc` type, it will add a `z` in the beginning of the base58 encoded string
+  ```
+  zNKtCNqYWLYWYW3gWRA1vnRykfCBZYHZvzKr
+  ```
+- Step 11: Assemble the parts and get the full DID
+  ```
+  did:abt:zNKtCNqYWLYWYW3gWRA1vnRykfCBZYHZvzKr
+  ```
+
+For a detailed explain of the algorithm, please check out [ArcBlock DID Explained](https://www.arcblock.io/blog/en/post/2019/05/28/did-101)
+
+## Appendix
+
+### RoleType
+
+```javascript
+const RoleType = {
+  ROLE_ACCOUNT: 0,
+  ROLE_NODE: 1,
+  ROLE_DEVICE: 2,
+  ROLE_APPLICATION: 3,
+  ROLE_SMART_CONTRACT: 4,
+  ROLE_BOT: 5,
+  ROLE_ASSET: 6,
+  ROLE_STAKE: 7,
+  ROLE_VALIDATOR: 8,
+  ROLE_GROUP: 9,
+  ROLE_TX: 10,
+  ROLE_TETHER: 11,
+  ROLE_SWAP: 12,
+  ROLE_DELEGATION: 13,
+  ROLE_VC: 14,
+  ROLE_BLOCKLET: 15,
+  ROLE_STORE: 16,
+  ROLE_TOKEN: 17,
+  ROLE_FACTORY: 18,
+  ROLE_ROLLUP: 19,
+  ROLE_STORAGE: 20,
+  ROLE_ANY: 63,
+};
+```
+
+### KeyType
+
+```javascript
+const KeyType = {
+  ED25519: 0,
+  SECP256K1: 1,
+  ETHEREUM: 2,
+};
+```
+
+### HashType
+
+```javascript
+const HashType = {
+  KECCAK: 0,
+  SHA3: 1,
+  KECCAK_384: 2,
+  SHA3_384: 3,
+  KECCAK_512: 4,
+  SHA3_512: 5,
+  SHA2: 6,
+};
+```
+
+## References
+
+- [W3C DID Core](https://www.w3.org/TR/did-core/)
