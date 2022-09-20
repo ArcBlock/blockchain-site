@@ -1,8 +1,152 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: Send first transaction
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+In this tutorial you will learn how to connect to a running blockchain and send your first transaction.
+
+## Setup Project
+
+Run following commands to setup a project:
+
+```bash
+mkdir -p /tmp/arcblock/blockchain && cd /tmp/arcblock/blockchain
+npm init -y
+npm install @ocap/client @ocap/wallet -S
+```
+
+## Connect to Test Chain
+
+Then let's create a `list.js` file under `/tmp/arcblock/blockchain`:
+
+```javascript
+const Client = require("@ocap/client");
+
+// Init client with test chain endpoint
+const client = new Client("https://beta.abtnetwork.io/api/");
+
+// Query latest transactions on test chain
+client.listTransactions().then((data) => console.log(data.transactions));
+```
+
+Then run the script with `node list.js`, output will be similar with following:
+
+```js
+[
+  {
+    code: 'OK',
+    hash: '088E573D87CD2831D283DBF9BFBC744ED95A6DC953ED867D6F50E43A455C3BD9',
+    receiver: 'z1eoWWAhtb2Y2ZLB5D2Pbgb1kEgKyURvtt1',
+    sender: 'zNKeLKixvCM32TkVM1zmRDdAU3bvm3dTtAcM',
+    time: '2022-09-20T08:46:04.671Z',
+    type: 'transfer_v2',
+    tx: {
+      chainId: 'beta',
+      delegator: '',
+      from: 'zNKeLKixvCM32TkVM1zmRDdAU3bvm3dTtAcM',
+      itxJson: [Object],
+      nonce: '1663663564596',
+      pk: '6xbpBn_ND9DB8YTgF7AV67Lsy8ZbAutmPQLpXlRJ6K8',
+      receiver: null,
+      sender: null,
+      serviceFee: '0',
+      signature: '95U8cKN2TZM-waRaEjA5CwHKv60VHxiDfvJPt4n8_Q2526BoQoI4kkw5272P1LZ-_5o5Qvgs0CN_Zc1A3TMNCQ',
+      signatures: []
+    }
+  },
+  ...
+]
+```
+- For more examples on query transactions please checkout [Query Transactions](../../how-to/query-tx).
+
+## Create Wallet
+
+In order to send transactions to the blockchain, we need create a wallet first, create a `wallet.js` file under `/tmp/arcblock/blockchain`:
+
+```javascript
+const { fromRandom } = require("@ocap/wallet");
+
+// Create wallet from random key-pair
+const wallet = fromRandom();
+console.log(wallet);
+```
+
+Then run the script with `node wallet.js`, output will be similar with following:
+
+```js
+{
+  type: { role: 0, pk: 0, hash: 1, address: 1 },
+  secretKey: '0x18625b160eed695dc4ce0e77b334c0041fcecc9149198ec3791c1f173440607fc----truncated-text----',
+  publicKey: '0xcdde351726ef6bf8486a558d90d6588975eb07428a9c04acf55d7e439a4f63c7',
+  address: 'z1ivznhRWTgZaZkS2ZhwxgDVaYxV8qadxK9',
+  hash: [Function: hash],
+  sign: [Function: sign],
+  verify: [Function: verify],
+  ethHash: [Function: ethHash],
+  ethSign: [Function: ethSign],
+  ethVerify: [Function: ethVerify],
+  toAddress: [Function: toAddress],
+  toJSON: [Function: toJSON]
+}
+```
+
+- For a better understanding of wallets please checkout [Understanding Wallets](../../conceptual/wallets).
+- For detailed usage instructions of `@ocap/wallet` please checkout [Working with Wallets](../../reference/wallets).
+
+## Send Transaction
+
+Now let's put things together by sending a transaction to the test chain, create a `tx.js` file under `/tmp/arcblock/blockchain`:
+
+```javascript
+const Client = require("@ocap/client");
+const { fromRandom } = require("@ocap/wallet");
+
+const wallet = fromRandom();
+const client = new Client("https://beta.abtnetwork.io/api/");
+
+(async () => {
+  // Create account on the blockchain that can own token and NFTs
+  const hash = await client.declare({ moniker: "hello-blockchain", wallet });
+  const result = await client.getTx({ hash });
+
+  console.log(result);
+})();
+```
+
+Then run the script with `node tx.js`, upon success you will see following output:
+
+```javascript
+{
+  code: 'OK',
+  info: {
+    code: 'OK',
+    hash: '8F8732038C397A5B5A0578728298CF1AA629616F6F48376DA98D69386295BAFC',
+    height: '0',
+    index: 0,
+    receiver: '',
+    sender: '',
+    time: '2022-09-20T08:59:01.281Z',
+    receipts: [],
+    tags: null,
+    tx: {
+      chainId: 'beta',
+      delegator: '',
+      from: 'z1TPn5rYHyxwbyphJ8ZoJECyVhy9tDDyEJU',
+      itxJson: [Object],
+      nonce: '1663664340951',
+      pk: 'ZibFto8AEQHjOCk-EulgeZ6Liue7mxfyUikRrS16pZs',
+      receiver: null,
+      sender: null,
+      serviceFee: '0',
+      signature: 'HAcfobpWist6eYrUAJ83N8W-gEktJcWy7YrZ0Mg9jojgl-W0h2ESKDFB2Ii7-U0-fu4A9dkHJX6zuyfjfHkqCg',
+      signatures: []
+    }
+  }
+}
+```
+
+The `8F8732038C397A5B5A0578728298CF1AA629616F6F48376DA98D69386295BAFC` is the transaction hash returned by the blockchain.
+
+You can inspect the transaction on [beta chain explorer](https://beta.abtnetwork.io/explorer/txs/8F8732038C397A5B5A0578728298CF1AA629616F6F48376DA98D69386295BAFC)
+
+- For a better understanding of transactions please checkout [Understanding Transactions](../../conceptual/txs).
