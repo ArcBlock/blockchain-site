@@ -10,7 +10,13 @@ title: Wallets and Accounts
 - A wallet usually have a secret key (SK), a public key (PK) and an address ([DID](../did)).
 - A wallet can be used to sign a [transaction](../transactions) or other format of message.
 - A wallet can be used to verify a signed message.
-- If you have the secret key you own the corresponding wallet.
+
+The wallet's secret and public keys are important, because:
+
+- The secret key is used to calculate the public key
+- The public key is used to calculate the address
+
+It's important to keep the secret keys safe, since knowledge of the secret key allows others to spoof signatures to send unauthorized transactions.
 
 ## What is Account?
 

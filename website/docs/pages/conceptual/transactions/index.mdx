@@ -1,16 +1,22 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: Transactions
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+## Inner and outer transaction
 
-- Inner and outer transaction
-- Inputs and Outputs
-- Transaction Fees
-  - Protocol fees
-  - Service fees
-  - Gas fees
-- MultiSig transactions
+## Inputs and Outputs
+
+## Transaction Fees
+
+- Protocol fees
+- Service fees
+- Gas fees
+
+## Transaction Signatures
+
+### Sender signature
+
+Each transaction carries a signature generated using the sender's secret key. The recipient can verify the sender's signature using the sender's public key, which is published on the blockchain. This helps ensure that the transaction content received is exactly as it was when the sender initiated the transaction.
+
+### Multi signatures

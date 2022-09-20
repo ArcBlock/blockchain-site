@@ -1,6 +1,7 @@
 ---
 layout: "documentation"
 title: Understanding DIDs
+description: Understanding DIDs
 ---
 
 ## What is DID?
@@ -16,11 +17,11 @@ DID is a unique identity address calculated from a set of credentials, and we ex
 - [Blocklet](https://developer.blocklet.io/docs/en/reference/blocklet-spec#DID)
 - Server
 
+## How to Create DID?
+
 :::Alert{type=success}
 Please note that sometimes the terms DID and address are used interchangeably in this documentation.
 :::
-
-## How to Create DID?
 
 ### DID Notation
 
@@ -34,6 +35,8 @@ schema
 
 ### DID Type
 
+Bitcoin and Ethereum use secp256k1 for the public key encryption of their wallets, to generate the wallet address, they used fixed hash algorithms.
+In arcblock, we make it flexible and extensible - developer or user can choose their favorite algorithms combination. For example, by default, we uses ED25519 for public key encryption, Sha3 for public key hash, and base58 (actually, base58 with multibase prefix) for address.
 DID type is the first two bytes of the DID string's binary format. It contains three sections:
 
 1. The first six bits are the `RoleType` of DID, e.g., `account` = 0
@@ -50,7 +53,7 @@ So DID type bytes `0x0C01` can be interpreted as follows:
 +-------------+-----------+------------+
 ```
 
-See [appendix](#appendix) for the full list of `RoleType`, `KeyType` and `HashType`.
+See [Appendix](#Appendix) for the full list of `RoleType`, `KeyType` and `HashType`.
 
 ### DID Algorithm
 
