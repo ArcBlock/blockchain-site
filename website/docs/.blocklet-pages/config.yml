@@ -62,6 +62,8 @@ themeConfig:
             link: /reference/stakes
           - text: Work with Verifiable Credentials
             link: /reference/vcs
+          - text: Working with Numbers
+            link: /reference/numbers
       - text: Conceptual Guides
         items:
           - text: Understanding DIDs
@@ -139,6 +141,8 @@ themeConfig:
             link: /reference/stakes
           - text: 使用可验证声明(VC)
             link: /reference/vcs
+          - text: 处理数字
+            link: /reference/numbers
       - text: 概念指南
         items:
           - text: 理解 DIDs

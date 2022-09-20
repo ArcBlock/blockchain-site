@@ -3,9 +3,31 @@ layout: "documentation"
 title: Transactions
 ---
 
-## Inner and outer transaction
+A transaction must be encoded and signed by the sender's [wallet](../wallets), once sent to the blockchain node, it's decoded and verified, and then executed and appended to the ledger.
 
-## Inputs and Outputs
+## Transaction
+
+```typescript
+type Transaction = {
+  from: DID;
+  nonce: number;
+  chainId: string;
+  pk: string;
+  gas: number;
+  delegator: string;
+  signature: string;
+  signatures: Array<Multisig>;
+  itx: google_protobuf_any_pb.Any;
+  receipts: Array<TTransactionReceipt>;
+  serviceFee: string;
+};
+```
+
+## Itx (Inner Transaction)
+
+## Transaction Data
+
+## Transaction Size Limit
 
 ## Transaction Fees
 
