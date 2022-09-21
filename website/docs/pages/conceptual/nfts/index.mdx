@@ -101,10 +101,14 @@ type NFTEndpoint = {
 
   // can be public|private, private endpoints are requested with DID Connect
   scope: string;
-}
+};
 ```
 
 A live NFT endpoint example form [Blocklet Launcher](https://launcher.arcblock.io/api/nft/status?locale=en&assetId=zjdo88xSyb3NRMGWLPEE8qxbAbjaCMdy7ikZ).
+
+:::Alert
+TODO: how to create the response by NFT endpoint should be added
+:::
 
 ## NFT Factory
 
@@ -212,7 +216,38 @@ Data that can be consumed in NFT factory output includes:
 
 ### NFT Factory Hooks
 
-NFT
+Developers can use hooks to add custom logic when a new NFT is acquired from a factory, for example:
+
+- [Blocklet Store](https://store.blocklet.dev) uses factory hooks to split revenue between the blocklet developer and store when users purchased a paid blocklet.
+- NFT minting tool use factory hooks to split revenue between the developer and NFT provider.
+
+Factory hooks are set and immutable when sending `CreateFactoryTx`, [hooks from Blocklet Store](https://main.abtnetwork.io/explorer/txs/8C44A0551752A33B9F9488DA20877F7E15B0ECD9774A405AB046C362A4BD7E48):
+
+```json
+[
+  {
+    "name": "mint",
+    "type": "contract",
+    "hook": "transferToken('z35nNRvYxBoHitx9yZ5ATS88psfShzPPBLxYD','z1gShFYDsiMfGtaerBTh2ydu75768xMYPQU','4662000000000000000');\ntransferToken('z35nNRvYxBoHitx9yZ5ATS88psfShzPPBLxYD','zNKXtdqz6Jbw5mKpojK2nP5gRNiEGJY3mNFF','1998000000000000000')"
+  }
+]
+```
+
+This mint hook uses the **experimental contract** of the chain:
+
+```javascript
+transferToken(
+  "z35nNRvYxBoHitx9yZ5ATS88psfShzPPBLxYD", // token address
+  "z1gShFYDsiMfGtaerBTh2ydu75768xMYPQU", // receiver address
+  "4662000000000000000" // token amount in big number
+);
+```
+
+Token transfers in factory hooks must the following restrictions:
+
+- Revenue split must not exceed the factory input token amount
+- Token receivers must exist in the ledger
+- Token address must exist in the ledger
 
 ### NFT Factory Data
 
