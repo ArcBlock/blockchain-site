@@ -3,11 +3,11 @@ layout: "documentation"
 title: Transactions
 ---
 
-A transaction must be encoded and signed by the sender's [wallet](../wallets), once sent to the blockchain, it's decoded and verified, and then executed and appended to the ledger.
+A transaction must be encoded and signed by the sender's [wallet](../wallets), once sent to the chain, it's decoded and verified, and then executed and appended to the ledger.
 
-- A transaction is identified by `hash` similar to other blockchains such as Bitcoin and Ethereum.
-- A transaction is encoded as binary before being signed and sent to the blockchain.
-- A transaction is decoded and formatted before being displayed on the blockchain explorer.
+- A transaction is identified by `hash` similar to other chains such as Bitcoin and Ethereum.
+- A transaction is encoded as binary before being signed and sent to the chain.
+- A transaction is decoded and formatted before being displayed on the chain explorer.
 
 ## Transaction Structure
 
@@ -58,7 +58,7 @@ type TransferV2Tx = {
 ```
 
 :::Alert
-The inner transaction is decoded and notated as `itxJson` in blockchain explorer for better readability.
+The inner transaction is decoded and notated as `itxJson` in chain explorer for better readability.
 :::
 
 ### Any Type
@@ -111,7 +111,7 @@ As you can see from the example **Any** types can be nested.
 
 ### Transaction Types
 
-The transaction filter from blockchain explorer lists all supported transaction types supported. Each transaction type defines a structure that can be used in `itx`.
+The transaction filter from chain explorer lists all supported transaction types supported. Each transaction type defines a structure that can be used in `itx`.
 
 - Account
   - DeclareTx
@@ -156,7 +156,7 @@ Each transaction can have a `data` field that is `Any` type, see next section.
 
 ## Transaction Size Limit
 
-To protect the blockchain from abuse, there are hard limits for each transaction size, transactions that exceed the size limit will fail at the verification phase.
+To protect the chain from abuse, there are hard limits for each transaction size, transactions that exceed the size limit will fail at the verification phase.
 
 The current size limit (measured by byteLength of the encoded transaction buffer) for each transaction type is:
 
@@ -191,7 +191,7 @@ The current size limit (measured by byteLength of the encoded transaction buffer
 
 ## Transaction Fees
 
-The **Transaction Fee** is another mechanism for protecting the blockchain from attacks. There are 3 types of fees charged when a transaction is successfully executed:
+The **Transaction Fee** is another mechanism for protecting the chain from attacks. There are 3 types of fees charged when a transaction is successfully executed:
 
 - Protocol fee: charged when moving tokens with DepositTokenV2Tx and WithdrawTokenV2Tx across ArcBridge, fee rate may vary between bridges.
 - Service fee: charged when sending `CreateAssetTx`, `CreateFactoryTx`, `CreateTokenTx` and `CreateRollupTx`.
@@ -201,13 +201,13 @@ The **Transaction Fee** is another mechanism for protecting the blockchain from 
 
 ### Sender signature
 
-Each transaction carries a signature generated using the sender's secret key. The blockchain and recipient can verify the sender's signature using the sender's public key, which is published on the blockchain. This helps ensure that the transaction content received is exactly as it was when the sender initiated the transaction.
+Each transaction carries a signature generated using the sender's secret key. The chain and recipient can verify the sender's signature using the sender's public key, which is published on the chain. This helps ensure that the transaction content received is exactly as it was when the sender initiated the transaction.
 
 ### Multi-party signature
 
-In most blockchain implementations, only the transaction sender is required to sign the transaction. With the sender's signature, we would trust that the operation is authorized by the sender. Transactions like `Transfer` is a typical example that the sender would send some tokens / NFTs to the receiver (without the receiver's permission). In the real-world, vast use cases require authorization among all parties in the transaction.
+In most chain implementations, only the transaction sender is required to sign the transaction. With the sender's signature, we would trust that the operation is authorized by the sender. Transactions like `Transfer` is a typical example that the sender would send some tokens / NFTs to the receiver (without the receiver's permission). In the real-world, vast use cases require authorization among all parties in the transaction.
 
-ArcBlock blockchain has native support for multi-party-signed transactions. Transactions that support multi-party-signature includes:
+ArcBlock chain has native support for multi-party-signed transactions. Transactions that support multi-party-signature includes:
 
 - TransferV3Tx: if the transaction input is from multiple payers
 - AcquireAssetV3Tx: if the transaction input is from multiple payers

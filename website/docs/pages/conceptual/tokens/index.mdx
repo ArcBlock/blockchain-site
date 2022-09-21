@@ -1,11 +1,44 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: Tokens
+description: Tokens
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+## What is token?
 
-- What is Token?
-- What is Foreign Token?
+A typical blockchain supports at least 1 cryptocurrency natively, cryptocurrencies on the ArcBlock chain are called **tokens**, a token is a digital or virtual currency that is secured by cryptography, which makes it nearly impossible to counterfeit or double-spend.
+
+- The native token on [main chain](https://main.abtnetwork.io) is [ABT](https://main.abtnetwork.io/explorer/tokens/z35nNRvYxBoHitx9yZ5ATS88psfShzPPBLxYD/txs)
+- The native token on [beta chain](https://beta.abtnetwork.io) is [TBA](https://beta.abtnetwork.io/explorer/tokens/z35n6UoHSi9MED4uaQy6ozFgKPaZj2UKrurBG/txs)
+
+Developers can create as many tokens as needed on the ArcBlock chain by sending `CreateTokenTx`.
+
+Users can do more with tokens on ArcBlock chain than other blockchains without any smart contract, such as:
+
+- Transfer tokens to his/her friend
+- Pay with tokens to purchase digital properties in NFT format
+- Exchange between tokens at some fixed rate
+
+## What is foreign token?
+
+Foreign token is used to correlate a token on ArcBlock chain with a token on EVM compatible chain. The token on both chains has the same symbol, decimal, and supply.
+
+For example: ABT on Arcblock [main chain](https://main.abtnetwork.io/explorer/tokens/z35nNRvYxBoHitx9yZ5ATS88psfShzPPBLxYD/txs) and Ethereum [mainnet](https://etherscan.io/address/0xb98d4c97425d9908e66e53a6fdf673acca0be986) are the same
+
+The `foreignToken` field is defined when sending `CreateTokenTx` and can not be updated after creation:
+
+```typescript
+type ForeignToken = {
+  type: string;
+  contractAddress: string;
+  chainType: string;
+  chainName: string;
+  chainId: number;
+};
+```
+
+A token with a valid foreign token should set up an ArcBridge to allow users to move their tokens between ArcBlock and Ethereum chain.
+
+:::Alert
+TODO: more about ArcBridge should be added here
+:::

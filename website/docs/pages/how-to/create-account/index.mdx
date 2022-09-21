@@ -4,11 +4,11 @@ title: Create Accounts
 description: Create Accounts with DeclareTx or other transactions
 ---
 
-An account is a data entry that's stored in the blockchain ledger, there are several ways to create an account in the ledger.
+An account is a data entry that's stored in the chain ledger, there are several ways to create an account in the ledger.
 
 ## Create accounts with DeclareTx
 
-The most intuitive way to create an account is to send a `DeclareTx` to the blockchain, here are a few examples:
+The most intuitive way to create an account is to send a `DeclareTx` to the chain, here are a few examples:
 
 ### With account moniker
 
@@ -19,10 +19,10 @@ const Client = require("@ocap/client");
 const client = new Client("https://beta.abtnetwork.io/api/");
 const wallet = fromRandom();
 
-const hash = await client.declare({ moniker: "blockchain-user", wallet });
+const hash = await client.declare({ moniker: "chain-user", wallet });
 ```
 
-The `moniker` field will be displayed on the account detail page in [blockchain explorer](https://beta.abtnetwork.io/explorer/accounts/z1TPn5rYHyxwbyphJ8ZoJECyVhy9tDDyEJU) like this:
+The `moniker` field will be displayed on the account detail page in [chain explorer](https://beta.abtnetwork.io/explorer/accounts/z1TPn5rYHyxwbyphJ8ZoJECyVhy9tDDyEJU) like this:
 
 ![](./images/detail.png)
 
@@ -35,7 +35,7 @@ You can also set the `issuer` field when creating an account, with this field yo
 
 ```javascript
 const hash = await client.declare({
-  moniker: "blockchain-user",
+  moniker: "chain-user",
   issuer: "<issuer-address>",
   wallet,
 });
@@ -52,11 +52,11 @@ You can also attach some `data` with the account when creating:
 
 ```javascript
 const hash = await client.declare({
-  moniker: "blockchain-user",
+  moniker: "chain-user",
   data: {
     type: "json",
     value: {
-      source: "hello-arcblock-blockchain",
+      source: "hello-arcblock-chain",
     },
   },
   wallet,
@@ -65,7 +65,7 @@ const hash = await client.declare({
 
 ## Create accounts implicitly
 
-ArcBlock blockchain also creates accounts implicitly in the following cases so that the user does not need to send `DeclareTx` ahead:
+ArcBlock chain also creates accounts implicitly in the following cases so that the user does not need to send `DeclareTx` ahead:
 
 - Delegate: when the delegation receiver is not in the ledger, it's created
 - Transfer: when the receiver is not in the ledger, it's created

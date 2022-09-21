@@ -3,21 +3,21 @@ layout: "documentation"
 title: Send first transaction
 ---
 
-In this tutorial you will learn how to connect to a running blockchain and send your first transaction.
+In this tutorial you will learn how to connect to a running chain and send your first transaction.
 
 ## Setup Project
 
 Run following commands to setup a project:
 
 ```bash
-mkdir -p /tmp/arcblock/blockchain && cd /tmp/arcblock/blockchain
+mkdir -p /tmp/arcblock/chain && cd /tmp/arcblock/chain
 npm init -y
 npm install @ocap/client @ocap/wallet -S
 ```
 
 ## Connect to Test Chain
 
-Then let's create a `list.js` file under `/tmp/arcblock/blockchain`:
+Then let's create a `list.js` file under `/tmp/arcblock/chain`:
 
 ```javascript
 const Client = require("@ocap/client");
@@ -61,7 +61,7 @@ Then run the script with `node list.js`, output will be similar with following:
 
 ## Create Wallet
 
-In order to send transactions to the blockchain, we need create a wallet first, create a `wallet.js` file under `/tmp/arcblock/blockchain`:
+In order to send transactions to the chain, we need create a wallet first, create a `wallet.js` file under `/tmp/arcblock/chain`:
 
 ```javascript
 const { fromRandom } = require("@ocap/wallet");
@@ -95,7 +95,7 @@ Then run the script with `node wallet.js`, output will be similar with following
 
 ## Send Transaction
 
-Now let's put things together by sending a transaction to the test chain, create a `tx.js` file under `/tmp/arcblock/blockchain`:
+Now let's put things together by sending a transaction to the test chain, create a `tx.js` file under `/tmp/arcblock/chain`:
 
 ```javascript
 const Client = require("@ocap/client");
@@ -105,8 +105,8 @@ const wallet = fromRandom();
 const client = new Client("https://beta.abtnetwork.io/api/");
 
 (async () => {
-  // Create account on the blockchain that can own token and NFTs
-  const hash = await client.declare({ moniker: "hello-blockchain", wallet });
+  // Create account on the chain that can own token and NFTs
+  const hash = await client.declare({ moniker: "hello-chain", wallet });
   const result = await client.getTx({ hash });
 
   console.log(result);
@@ -145,7 +145,7 @@ Then run the script with `node tx.js`, upon success you will see following outpu
 }
 ```
 
-The `8F8732038C397A5B5A0578728298CF1AA629616F6F48376DA98D69386295BAFC` is the transaction hash returned by the blockchain.
+The `8F8732038C397A5B5A0578728298CF1AA629616F6F48376DA98D69386295BAFC` is the transaction hash returned by the chain.
 
 You can inspect the transaction on [beta chain explorer](https://beta.abtnetwork.io/explorer/txs/8F8732038C397A5B5A0578728298CF1AA629616F6F48376DA98D69386295BAFC)
 
