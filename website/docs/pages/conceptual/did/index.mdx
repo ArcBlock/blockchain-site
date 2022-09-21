@@ -20,7 +20,7 @@ DID is a unique identity address calculated from a set of credentials, and we ex
 ## How to Create DID?
 
 :::Alert{type=success}
-Please note that sometimes the terms DID and address are used interchangeably in this documentation.
+Please note that sometimes the terms DID and address is used interchangeably in this documentation.
 :::
 
 ### DID Notation
@@ -35,13 +35,15 @@ schema
 
 ### DID Type
 
-Bitcoin and Ethereum use secp256k1 for the public key encryption of their wallets, to generate the wallet address, they used fixed hash algorithms.
-In arcblock, we make it flexible and extensible - developer or user can choose their favorite algorithms combination. For example, by default, we uses ED25519 for public key encryption, Sha3 for public key hash, and base58 (actually, base58 with multibase prefix) for address.
-DID type is the first two bytes of the DID string's binary format. It contains three sections:
+Bitcoin and Ethereum use `secp256k1` for the public key encryption of their wallets, to generate the wallet address, they used fixed hash algorithms. In ArcBlock, we make this process flexible and extensible - developers and users can choose their favorite algorithm combination. For example, by default, we use `ED25519` for public key encryption, `SHA3` for public key hashing, and `base58` for address encoding.
+
+To make sure the address contains the info about the algorithm combination, we pack this algorithm combination as `DID Type` and include them in the DID generating process.
+
+`DID type` is the first 2 bytes of the DID string's binary format. It contains three sections:
 
 1. The first six bits are the `RoleType` of DID, e.g., `account` = 0
-2. The following 5 bits denote the `KeyType`, algorithm to convert secret key to public key, e.g., `ED25519` = 0
-3. The latter 5 bits represent the `HashType` function to calculate the hash of the public key, e.g., `sha3` = 1
+2. The following 5 bits denote the `KeyType`, the algorithm to convert the secret key to the public key, e.g., `ED25519` = 0
+3. The latter 5 bits represent the `HashType` function to calculate the hash of the public key, e.g., `SHA3` = 1
 
 So DID type bytes `0x0C01` can be interpreted as follows:
 
@@ -55,9 +57,9 @@ So DID type bytes `0x0C01` can be interpreted as follows:
 
 See [Appendix](#Appendix) for the full list of `RoleType`, `KeyType` and `HashType`.
 
-### DID Algorithm
+### DID Generate Algorithm
 
-It's calculated with following algorithm:
+It's calculated with the following algorithm:
 
 - Step 1: Choose the _RoleType_, _KeyType_ and _Hash_ from above, let's use `application`, `ed25519` and `sha3` in this example.
 - Step 2: Choose a secret key randomly, e.g.
@@ -101,7 +103,7 @@ It's calculated with following algorithm:
   did:abt:zNKtCNqYWLYWYW3gWRA1vnRykfCBZYHZvzKr
   ```
 
-For a detailed explain of the algorithm, please check out [ArcBlock DID Explained](https://www.arcblock.io/blog/en/post/2019/05/28/did-101)
+For a detailed explanation of the algorithm, please check out [ArcBlock DID Explained](https://www.arcblock.io/blog/en/post/2019/05/28/did-101)
 
 ## Appendix
 
