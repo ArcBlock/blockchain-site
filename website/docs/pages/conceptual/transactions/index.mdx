@@ -61,19 +61,9 @@ type TransferV2Tx = {
 The inner transaction is decoded and notated as `itxJson` in blockchain explorer for better readability.
 :::
 
-### Transaction Types
-
-The transaction filter from blockchain explorer lists all supported transaction types supported. Each transaction type defines a structure that can be used in `itx`.
-
-![](./images/types.png)
-
-### Transaction Data
-
-Each transaction can have a `data` field that is `Any` type, see next section.
-
 ### Any Type
 
-**Any** type is widely used in transactions to encode data that belongs to the same field but has different types and shapes:
+**Any** type is widely used in transactions to encode data that's attached to the same field but has different types and shapes:
 
 ```typescript
 type Any = {
@@ -82,53 +72,130 @@ type Any = {
 };
 ```
 
-**Any** usage in a transaction:
+Let's look at how `Any` type is used with an example:
 
-- `itx` field on the outer transaction is used to attach the inner transaction, which can be any of the supported types.
-- `data` filed on the inner transaction is used to attach optional data that can be any type, such as `json` and `vc`
+```javascript
+const tx = {
+  from: "zNKnjMDau9aK6kYkxX7fhFkbozQQhvTzGqnX",
+  pk: "0848uy6x11gle2SR3hummTMyZpLRNv_ai4RaquxIDyg",
+  chainId: "beta",
+  nonce: "1663680171202",
+  signature: "Sd4ALBExbm5ssWo4S2RITqJm48BPcb8s1c4UmO-l6o5x5WW619ZEK",
+  signatures: [],
+  delegator: "",
+  itx: {
+    type: "DeclareTx",
+    value: {
+      moniker: "blocklet-registry-service",
+      issuer: "",
+      data: {
+        type: "json",
+        value: {
+          role: "ROLE_APPLICATION",
+          pk: "ED25519",
+          hash: "SHA3",
+          address: "BASE58",
+        },
+      },
+    },
+  },
+};
+```
+
+**Any** is used in 2 places in above transaction:
+
+- `itx` field on the outer transaction to attach the inner transaction, which can be any of the [supported types](#transaction-types).
+- `data` filed on the inner transaction to attach optional data that can be any type, such as `json` and `vc`.
+
+As you can see from the example **Any** types can be nested.
+
+### Transaction Types
+
+The transaction filter from blockchain explorer lists all supported transaction types supported. Each transaction type defines a structure that can be used in `itx`.
+
+- Account
+  - DeclareTx
+  - AccountMigrateTx
+  - DelegateTx
+  - RevokeDelegateTx
+- NFT
+  - CreateAssetTx
+  - UpdateAssetTx
+  - MintAssetTx
+  - AcquireAssetV2Tx
+  - AcquireAssetV3Tx
+  - CreateFactoryTx
+- Token
+  - CreateTokenTx
+  - DepositTokenV2Tx
+  - WithdrawTokenV2Tx
+- Trading
+  - ExchangeV2Tx: with multiple input support
+  - TransferV2Tx: with multiple input support
+  - TransferV3Tx: with multiple input and output support
+- Staking
+  - StakeTx
+  - RevokeStakeTx
+  - ClaimStakeTx
+- Rollup
+  - CreateRollupTx
+  - UpdateRollupTx
+  - JoinRollupTx
+  - PauseRollupTx
+  - ResumeRollupTx
+  - MigrateRollupContractTx
+  - MigrateRollupTokenTx
+  - JoinRollupTx
+  - LeaveRollupTx
+  - CreateRollupBlockTx
+  - ClaimBlockRewardTx
+
+### Transaction Data
+
+Each transaction can have a `data` field that is `Any` type, see next section.
 
 ## Transaction Size Limit
 
-To protect the blockchain from abuse, there are hard limits for each transaction size, transactions that exceeds the size limit will fail at the verification phase.
+To protect the blockchain from abuse, there are hard limits for each transaction size, transactions that exceed the size limit will fail at the verification phase.
 
-The current size limit is:
+The current size limit (measured by byteLength of the encoded transaction buffer) for each transaction type is:
 
-```js
-'fg:t:account_migrate': 348,
-'fg:t:create_asset': 65881,
-'fg:t:create_factory': 65881,
-'fg:t:declare': 664,
-'fg:t:exchange_v2': 1691,
-'fg:t:transfer': 664,
-'fg:t:transfer_v2': 664,
-'fg:t:transfer_v3': 4096,
-'fg:t:update_asset': 65881,
-'fg:t:acquire_asset_v2': 4096,
-'fg:t:acquire_asset_v3': 4096,
-'fg:t:mint_asset': 4096,
-'fg:t:create_token': 664,
-'fg:t:deposit_token_v2': 1691,
-'fg:t:withdraw_token_v2': 1691,
-'fg:t:stake': 4096,
-'fg:t:revoke_stake': 664,
-'fg:t:claim_stake': 664,
-'fg:t:create_rollup': 1691,
-'fg:t:update_rollup': 1691,
-'fg:t:pause_rollup': 1691,
-'fg:t:resume_rollup': 1691,
-'fg:t:join_rollup': 1691,
-'fg:t:leave_rollup': 1691,
-'fg:t:migrate_rollup_contract': 1691,
-'fg:t:migrate_rollup_token': 1691,
-'fg:t:create_rollup_block': 4096,
-'fg:t:claim_block_reward': 1691,
-```
+- AccountMigrate: 348
+- CreateAsset: 65881
+- CreateFactory: 65881
+- Declare: 664
+- ExchangeV2: 1691
+- Transfer: 664
+- TransferV2: 664
+- TransferV3: 4096
+- UpdateAsset: 65881
+- AcquireAssetV2: 4096
+- AcquireAssetV3: 4096
+- MintAsset: 4096
+- CreateToken: 664
+- DepositTokenV2: 1691
+- WithdrawTokenV2: 1691
+- Stake: 4096
+- RevokeStake: 664
+- ClaimStake: 664
+- CreateRollup: 1691
+- UpdateRollup: 1691
+- PauseRollup: 1691
+- ResumeRollup: 1691
+- JoinRollup: 1691
+- LeaveRollup: 1691
+- MigrateRollupContract: 1691
+- MigrateRollupToken: 1691
+- CreateRollupBlock: 4096
+- ClaimBlockReward: 1691
 
 ## Transaction Fees
 
-- Protocol fees
-- Service fees
-- Gas fees
+The **Transaction Fee** is another mechanism for protecting the blockchain from attacks. There are 3 types of fees charged when a transaction is successfully executed:
+
+- Protocol fee: charged when moving tokens with DepositTokenV2Tx and WithdrawTokenV2Tx across ArcBridge, fee rate may vary between bridges.
+- Service fee: charged when sending `CreateAssetTx`, `CreateFactoryTx`, `CreateTokenTx` and `CreateRollupTx`.
+- Gas fee: charged when sending all transaction types, neither the main nor beta chain enabled gas fee.
 
 ## Transaction Signature
 
@@ -137,3 +204,11 @@ The current size limit is:
 Each transaction carries a signature generated using the sender's secret key. The blockchain and recipient can verify the sender's signature using the sender's public key, which is published on the blockchain. This helps ensure that the transaction content received is exactly as it was when the sender initiated the transaction.
 
 ### Multi-party signature
+
+In most blockchain implementations, only the transaction sender is required to sign the transaction. With the sender's signature, we would trust that the operation is authorized by the sender. Transactions like `Transfer` is a typical example that the sender would send some tokens / NFTs to the receiver (without the receiver's permission). In the real-world, vast use cases require authorization among all parties in the transaction.
+
+ArcBlock blockchain has native support for multi-party-signed transactions. Transactions that support multi-party-signature includes:
+
+- TransferV3Tx: if the transaction input is from multiple payers
+- AcquireAssetV3Tx: if the transaction input is from multiple payers
+- Rollup Related Tx: signatures are required from all rollup validators
