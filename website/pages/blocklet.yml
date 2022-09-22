@@ -1,6 +1,6 @@
 name: blockchain-site
 title: ArcBlock Blockchain
-description:Website and Documentation for ArcBlock Blockchain
+description: Website for ArcBlock Blockchain
 keywords:
   - store
 group: static
@@ -75,4 +75,11 @@ navigation:
         link: https://explorer.abtnetwork.io
     section:
       - header
-children: []
+children:
+  - name: meilisearch
+    mountPoint: /meilisearch
+    source:
+      store:
+        - https://test.store.blocklet.dev
+      name: meilisearch
+      version: latest
