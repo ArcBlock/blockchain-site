@@ -1,6 +1,6 @@
 name: blockchain-docs
 title: Blockchain Docs
-description: Blockchain Docs
+description: Documentation for ArcBlock Blockchain
 keywords:
   - store
 group: static
@@ -13,10 +13,10 @@ repository:
   type: git
   url: git+https://github.com/arcblock/blockchain-site.git
 specVersion: 1.2.7
-version: 0.0.2
+version: 0.0.3
 logo: logo.png
 files:
-  - logo.png
+  - hooks/post-start.js
 interfaces:
   - type: web
     name: publicUrl
@@ -39,6 +39,7 @@ requirements:
   cpu: '*'
 scripts:
   dev: npm run start
+  postStart: node hooks/post-start.js
 environments: []
 capabilities:
   clusterMode: false

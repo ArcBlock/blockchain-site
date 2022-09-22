@@ -1,6 +1,6 @@
 name: blockchain-site
 title: ArcBlock Blockchain
-description: Decentralized store for blocklets
+description: Website for ArcBlock Blockchain
 keywords:
   - store
 group: static
@@ -13,7 +13,7 @@ repository:
   type: git
   url: git+https://github.com/arcblock/blockchain-site.git
 specVersion: 1.2.7
-version: 0.0.2
+version: 0.0.3
 logo: logo.png
 files:
   - logo.png
@@ -75,4 +75,11 @@ navigation:
         link: https://explorer.abtnetwork.io
     section:
       - header
-children: []
+children:
+  - name: meilisearch
+    mountPoint: /meilisearch
+    source:
+      store:
+        - https://test.store.blocklet.dev
+      name: meilisearch
+      version: latest

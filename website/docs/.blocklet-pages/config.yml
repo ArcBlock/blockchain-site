@@ -2,6 +2,11 @@ name: Blockchain Docs
 title: Blockchain Docs
 description: This is Blockchain Docs Site, powered by Blocklet Page
 github: https://github.com/arcblock/blockchain-site
+plugins:
+  - resolve: '@xmark/plugin-docs-indexer'
+optimizeDeps:
+  include:
+    - docs-searchbar.js
 theme: docs
 themeConfig:
   sidebar:
