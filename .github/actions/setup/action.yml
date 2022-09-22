@@ -4,10 +4,10 @@ description: Install dependencies and build
 runs:
   using: 'composite'
   steps:
-    - name: Use Node.js v14
+    - name: Use Node.js v16
       uses: actions/setup-node@v2
       with:
-        node-version: 14
+        node-version: 16
     - name: Cache node_modules
       uses: actions/cache@v2
       id: node_modules-cache
