@@ -1,3 +1,7 @@
+## 0.0.4 (September 22, 2022)
+
+- chore: bump xmark to latest
+
 ## 0.0.3 (September 22, 2022)
 
 - feat: enable doc search
