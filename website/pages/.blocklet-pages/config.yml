@@ -1,6 +1,6 @@
 name: Blockchain
 title: Blockchain
-description: Decentralized store for blocklets
+description:Website and Documentation for ArcBlock Blockchain
 github: https://github.com/arcblock/blockchain-site
 theme: arcblock
 themeConfig:
