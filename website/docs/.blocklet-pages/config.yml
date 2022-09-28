@@ -1,9 +1,9 @@
 name: Blockchain Docs
 title: Blockchain Docs
-description: This is Blockchain Docs Site, powered by Blocklet Page
+description: This is Blockchain Docs Site
 github: https://github.com/arcblock/blockchain-site
 plugins:
-  - resolve: '@xmark/plugin-docs-indexer'
+  - resolve: "@xmark/plugin-docs-indexer"
 optimizeDeps:
   include:
     - docs-searchbar.js
@@ -13,12 +13,11 @@ themeConfig:
     en:
       - text: Welcome
         link: /
-      - text: Frequently Asked Questions
-        link: /faq
-      - text: Quick Start
+      - text: Getting Started
+        link: /quick-start
         items:
           - text: Setup Node.js
-            link: /quick-start/setup-nodejs
+            link: /quick-start/nodejs
           - text: Send first transaction
             link: /quick-start/first-tx
       - text: How-to Guides
@@ -89,15 +88,15 @@ themeConfig:
             link: /toolkit/explorer
           - text: File Chain Manager
             link: /toolkit/file-chain
+      - text: Frequently Asked Questions
+        link: /faq
     zh:
       - text: 欢迎
         link: /
-      - text: 常见问题
-        link: /faq
       - text: 快速开始
         items:
           - text: 安装 Node.js
-            link: /quick-start/setup-nodejs
+            link: /quick-start/nodejs
           - text: 发送第一笔交易
             link: /quick-start/first-tx
       - text: 操作指南
@@ -168,3 +167,5 @@ themeConfig:
             link: /toolkit/explorer
           - text: 测试链管理器
             link: /toolkit/file-chain
+      - text: 常见问题
+        link: /faq
