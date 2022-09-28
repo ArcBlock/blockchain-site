@@ -1,3 +1,7 @@
+## 0.0.6 (September 28, 2022)
+
+- fix: remove duplicate navigation
+
 ## 0.0.5 (September 28, 2022)
 
 - chore: the welcome part
