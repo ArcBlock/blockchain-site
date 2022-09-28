@@ -15,24 +15,25 @@ const {
 
 sidebar.zh.forEach((x, i) => {
   const names = ["index.mdx", "index.zh.mdx"];
-  const files = Array.isArray(x.items)
-    ? x.items.map((c, j) => ({
-        p: path.join(outDir, c.link),
-        t: [sidebar.en[i].items[j].text, c.text],
-      }))
-    : [{ p: path.join(outDir, x.link), t: [sidebar.en[i].text, x.text] }];
+  try {
+    const files = Array.isArray(x.items)
+      ? x.items.map((c, j) => ({
+          p: path.join(outDir, c.link),
+          t: [sidebar.en[i].items[j].text, c.text],
+        }))
+      : [{ p: path.join(outDir, x.link), t: [sidebar.en[i].text, x.text] }];
 
-  files.forEach(({ p, t }) => {
-    if (fs.existsSync(p)) {
-      return;
-    }
+    files.forEach(({ p, t }) => {
+      if (fs.existsSync(p)) {
+        return;
+      }
 
-    names.forEach((n, k) => {
-      fs.mkdirSync(p, { recursive: true });
-      const fileName = path.join(p, n);
-      fs.writeFileSync(
-        fileName,
-        `---
+      names.forEach((n, k) => {
+        fs.mkdirSync(p, { recursive: true });
+        const fileName = path.join(p, n);
+        fs.writeFileSync(
+          fileName,
+          `---
 layout: 'documentation'
 title: ${t[k]}
 ---
@@ -41,9 +42,13 @@ title: ${t[k]}
 this page is a draft and need to be updated
 :::
 
-  `
-      );
-      console.log(fileName);
+`
+        );
+        console.log(fileName);
+      });
     });
-  });
+  } catch (err) {
+    console.log(x, sidebar.en[i]);
+    console.error(err);
+  }
 });

@@ -1,9 +1,9 @@
 name: Blockchain Docs
 title: Blockchain Docs
-description: This is Blockchain Docs Site, powered by Blocklet Page
+description: This is Blockchain Docs Site
 github: https://github.com/arcblock/blockchain-site
 plugins:
-  - resolve: '@xmark/plugin-docs-indexer'
+  - resolve: "@xmark/plugin-docs-indexer"
 optimizeDeps:
   include:
     - docs-searchbar.js
@@ -13,12 +13,11 @@ themeConfig:
     en:
       - text: Welcome
         link: /
-      - text: Frequently Asked Questions
-        link: /faq
-      - text: Quick Start
+      - text: Getting Started
+        link: /quick-start
         items:
           - text: Setup Node.js
-            link: /quick-start/setup-nodejs
+            link: /quick-start/nodejs
           - text: Send first transaction
             link: /quick-start/first-tx
       - text: How-to Guides
@@ -53,22 +52,26 @@ themeConfig:
             link: /how-to/mint-nft-factory
       - text: Reference Guides
         items:
-          - text: Working with Crypto
+          - text: Hashes, Signatures and Encryption
             link: /reference/crypto
+          - text: Working with Numbers
+            link: /reference/numbers
           - text: Working with Wallets
             link: /reference/wallets
+          - text: Working with DIDs
+            link: /reference/did
           - text: Working with Transactions
             link: /reference/txs
           - text: Working with Tokens
             link: /reference/tokens
           - text: Working with NFTs
             link: /reference/nfts
-          - text: Working with Stakes
-            link: /reference/stakes
           - text: Work with Verifiable Credentials
             link: /reference/vcs
-          - text: Working with Numbers
-            link: /reference/numbers
+          - text: Working with stakes
+            link: /reference/stakes
+          - text: Working with Delegations
+            link: /reference/delegations
       - text: Conceptual Guides
         items:
           - text: Understanding DIDs
@@ -89,15 +92,15 @@ themeConfig:
             link: /toolkit/explorer
           - text: File Chain Manager
             link: /toolkit/file-chain
+      - text: Frequently Asked Questions
+        link: /faq
     zh:
       - text: 欢迎
         link: /
-      - text: 常见问题
-        link: /faq
       - text: 快速开始
         items:
           - text: 安装 Node.js
-            link: /quick-start/setup-nodejs
+            link: /quick-start/nodejs
           - text: 发送第一笔交易
             link: /quick-start/first-tx
       - text: 操作指南
@@ -132,22 +135,26 @@ themeConfig:
             link: /how-to/mint-nft-factory
       - text: 参考文档
         items:
-          - text: 加密相关
+          - text: 哈希、签名和加密
             link: /reference/crypto
+          - text: 进行数学运算
+            link: /reference/numbers
           - text: 使用钱包
             link: /reference/wallets
+          - text: 使用 DID
+            link: /reference/did
           - text: 签名和发送交易
             link: /reference/txs
           - text: 使用代币资产
             link: /reference/tokens
           - text: 使用 NFT 资产
             link: /reference/nfts
-          - text: 使用资产质押
-            link: /reference/stakes
           - text: 使用可验证声明(VC)
             link: /reference/vcs
-          - text: 处理数字
-            link: /reference/numbers
+          - text: 使用资产质押
+            link: /reference/stakes
+          - text: 使用授权委托
+            link: /reference/delegations
       - text: 概念指南
         items:
           - text: 理解 DIDs
@@ -168,3 +175,5 @@ themeConfig:
             link: /toolkit/explorer
           - text: 测试链管理器
             link: /toolkit/file-chain
+      - text: 常见问题
+        link: /faq
