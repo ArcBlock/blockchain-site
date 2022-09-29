@@ -1,3 +1,10 @@
+## 0.0.7 (September 29, 2022)
+
+- chore: add vc concept doc
+- chore: add did ref doc
+- chore: add vc ref doc
+- chore: add tx types ref doc
+
 ## 0.0.6 (September 28, 2022)
 
 - fix: remove duplicate navigation
