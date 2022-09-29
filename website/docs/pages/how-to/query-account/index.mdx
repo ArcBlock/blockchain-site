@@ -1,11 +1,60 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: Query Accounts
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+## Query account by address
 
-- Query account by address
-- Query accounts by token balance
+Since each account is identified by account address(DID), we can query account state by address with `getAccountState` method:
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { state } = await client.getAccountState({
+  address: "zNKZ4YXc9tYZN87KP51b7psz857GBzWFMz3N",
+});
+console.log(state);
+```
+
+## Query account tokens
+
+Each account can have multiple [tokens](/conceptual/tokens), we can query tokens owned by account address with `getAccountTokens` method:
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { tokens } = await client.getAccountTokens({
+  address: "zNKZ4YXc9tYZN87KP51b7psz857GBzWFMz3N",
+});
+console.log(tokens);
+```
+
+## Query account NFTs
+
+Each account can own multiple [NFTs](/conceptual/nfts), we can query NFTs owned by account address with `listAssets` method:
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { assets } = await client.listAssets({
+  ownerAddress: "zNKZ4YXc9tYZN87KP51b7psz857GBzWFMz3N",
+});
+console.log(assets);
+```
+
+## Query accounts by token balance
+
+We can also query accounts by token balance to monitor top token holders with `listTopAccounts` method:
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { accounts } = await client.listTopAccounts({
+  tokenAddress: "z35n6UoHSi9MED4uaQy6ozFgKPaZj2UKrurBG",
+});
+console.log(accounts);
+```

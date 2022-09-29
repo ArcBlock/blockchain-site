@@ -1,10 +1,11 @@
 ---
 layout: "documentation"
 title: Create Accounts
-description: Create Accounts with DeclareTx or other transactions
 ---
 
-An account is a data entry that's stored in the chain ledger, there are several ways to create an account in the ledger.
+An account is a data entry that's stored in the chain ledger, on-chain accounts are controlled by off-chain wallets, see [understanding accounts and wallets](/conceptual/wallets).
+
+There are several ways to create an account in the ledger.
 
 ## Create accounts with DeclareTx
 
@@ -25,6 +26,25 @@ const hash = await client.declare({ moniker: "chain-user", wallet });
 The `moniker` field will be displayed on the account detail page in [chain explorer](https://beta.abtnetwork.io/explorer/accounts/z1TPn5rYHyxwbyphJ8ZoJECyVhy9tDDyEJU) like this:
 
 ![](./images/detail.png)
+
+### With customized type
+
+Each account can customize the [role type](/conceptual/did#roletype), [key-type](/conceptual/did#keytype) and [hash-type](/conceptual/ddi#hashtype) for its address:
+
+```javascript
+const { types } = require("@ocap/mcrypto");
+const { fromRandom } = require("@ocap/wallet");
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const wallet = fromRandom({
+  role: types.RoleType.ROLE_BOT, // default to ROLE_ACCOUNT
+  key: types.KeyType.ED25519, // default to ED25519
+  hash: types.HashType.SHA3, // default to SHA3
+});
+
+const hash = await client.declare({ moniker: "customized-did", wallet });
+```
 
 ### With account issuer
 

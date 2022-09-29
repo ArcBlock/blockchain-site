@@ -68,7 +68,7 @@ themeConfig:
             link: /reference/nfts
           - text: Work with Verifiable Credentials
             link: /reference/vcs
-          - text: Working with stakes
+          - text: Working with Stakes
             link: /reference/stakes
           - text: Working with Delegations
             link: /reference/delegations
