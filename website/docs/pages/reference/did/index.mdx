@@ -1,9 +1,76 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: Working with DIDs
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+Utility functions to create/inspect did, and do did-based auth, an implementation of abt-did-protocol
 
+- [fromSecretKey(sk, type)](#fromSecretKey) ⇒ `string`
+- [fromPublicKey(pk, type)](#fromPublicKey) ⇒ `string`
+- [fromHash(hash, role)](#fromHash) ⇒ `string`
+- [isFromPublicKey(did, pk)](#isFromPublicKey) ⇒ `boolean`
+- [isValid(did)](#isValid) ⇒ `boolean`
+
+## fromSecretKey(sk, type) ⇒ `string`
+
+Gen DID from private key and type config
+
+Spec: https://github.com/ArcBlock/ABT-DID-Protocol#create-did
+
+**Kind**: static method\
+**Returns**: `string` - DID string\
+**Access**: public
+
+| Param | Type     | Description                   |
+| ----- | -------- | ----------------------------- |
+| sk    | `string` | hex encoded secret key string |
+| type  | `object` | wallet type                   |
+
+## fromPublicKey(pk, type) ⇒ `string`
+
+Gen DID from public key and type config
+
+**Kind**: static method\
+**Returns**: `string` - DID string\
+**Access**: public
+
+| Param | Type     | Description            |
+| ----- | -------- | ---------------------- |
+| pk    | `string` | hex encoded public key |
+| type  | `object` | wallet type            |
+
+## fromHash(hash, role) ⇒ `string`
+
+Gen DID from an hex encoded hash and role type
+
+**Kind**: static method\
+**Returns**: `string` - DID string\
+**Access**: public
+
+| Param | Type     | Description      |
+| ----- | -------- | ---------------- |
+| hash  | `string` | hex encoded hash |
+| role  | `enum`   | role type        |
+
+## isFromPublicKey(did, pk) ⇒ `boolean`
+
+Check if an DID is generated from a publicKey
+
+**Kind**: static method\
+**Access**: public
+
+| Param | Type     | Description                                 |
+| ----- | -------- | ------------------------------------------- |
+| did   | `string` | string of the did, usually base58btc format |
+| pk    | `string` | hex encoded publicKey string                |
+
+## isValid(did) ⇒ `boolean`
+
+Check if a DID string is valid
+
+**Kind**: static method\
+**Access**: public
+
+| Param | Type     | Description    |
+| ----- | -------- | -------------- |
+| did   | `string` | address string |

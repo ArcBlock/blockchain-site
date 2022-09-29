@@ -38,6 +38,20 @@ NFTs are always stored on the blockchain, but verifiable credentials do not need
 
 ![](./images/vc-and-nft.png)
 
+From the user's perspective, verifiable credentials and NFTs are both publicly verifiable, should have some visual presentation, and can be used to trigger some actions in applications in which the verifiable credential can be used.
+
+To make things consistent, verifiable credentials share the same [display](/conceptual/nfts#nft-display) and [endpoint](/conceptual/nfts/#nft-endpoint) mechanism as NFTs.
+
+### Verifiable Credential Display
+
+The display of a verifiable credential can be defined in `credentialSubject.display` field with the same data structure as [NFT Display](/conceptual/nft#NFT-Display), and presented the same way as NFT in DID Wallet.
+
+### Verifiable Credential Endpoint
+
+The endpoint of a verifiable credential can be defined in `credentialStatus` field with the same data structure as [NFT Endpoint](/conceptual/nft#NFT-Endpoint), and presented the same way as NFT in DID Wallet.
+
+The endpoint should return the status and action information related to the verifiable credential.
+
 ## Working with Verifiable Credentials
 
 - See [working with verifiable credentials](/reference/vcs) for how to **issue** and **verify** verifiable credentials with code
