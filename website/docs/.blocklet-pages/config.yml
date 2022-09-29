@@ -68,10 +68,14 @@ themeConfig:
             link: /reference/nfts
           - text: Work with Verifiable Credentials
             link: /reference/vcs
-          - text: Working with stakes
+          - text: Working with Stakes
             link: /reference/stakes
           - text: Working with Delegations
             link: /reference/delegations
+          - text: State Types
+            link: /reference/state-types
+          - text: Transaction Types
+            link: /reference/tx-types
       - text: Conceptual Guides
         items:
           - text: Understanding DIDs
@@ -155,6 +159,10 @@ themeConfig:
             link: /reference/stakes
           - text: 使用授权委托
             link: /reference/delegations
+          - text: 状态类型速查表
+            link: /reference/state-types
+          - text: 交易类型速查表
+            link: /reference/tx-types
       - text: 概念指南
         items:
           - text: 理解 DIDs

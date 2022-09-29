@@ -1,12 +1,294 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: Work with Verifiable Credentials
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+[@arcblock/vc](https://www.npmjs.com/package/@arcblock/vc) includes several utility functions to issue and verify [verifiable credentials](/conceptual/vcs) and [their presentations](https://w3c.github.io/vc-data-model/#presentations).
 
+## Add Library to project
 
-- Create Verifiable Credentials
-- Verify Verifiable Credentials
+Add `@arcblock/vc` to your project before creating or verifying any verifiable credential.
+
+```bash
+npm install @arcblock/vc -S
+# yarn add @arcblock/vc
+```
+
+## Issue Verifiable Credential
+
+Create a verifiable credential, the result can be sent and stored in DID Wallet.
+
+Usage: `create(params)`, the param should be like:
+
+| Param                 | Type     | Description                                 |
+| --------------------- | -------- | ------------------------------------------- |
+| params.type           | `string` | The type of credential, can be an array     |
+| params.subject        | `object` | The content of credential                   |
+| params.issuer         | `object` | The issuer name and wallet                  |
+| params.issuanceDate   | `Date`   | Default to now                              |
+| params.expirationDate | `Date`   | Default to null, never expire               |
+| params.endpoint       | `String` | Status endpoint url                         |
+| params.endpointScope  | `String` | Endpoint scope, either be public or private |
+
+### Basic Credential
+
+Example:
+
+```javascript
+const { create } = require("@arcblock/vc");
+const { fromRandom, fromSecretKey, fromAddress } = require("@ocap/wallet");
+
+// the verifiable credential issuer,
+// in real word applications, you should replace fromRandom with fromSecretKey
+// const issuer = fromSecretKey(process.env.VC_ISSUER_SK);
+const issuer = fromRandom();
+
+// the verifiable credential holder
+// in real word applications, you should replace fromRandom with fromAddress
+// const holder = fromAddress(process.env.ENV_HOLDER);
+const holder = fromRandom();
+
+const vc = create({
+  type: "CourseCertificate",
+  issuer: {
+    name: "Online Course Platform",
+    wallet: issuer,
+  },
+  subject: {
+    // the only required field in subject, the id of the holder
+    id: holder.address,
+    // other fields can be customized
+    completed: {
+      course: "Developer Training Program",
+    },
+  },
+});
+
+console.log(vc);
+```
+
+<details>
+<summary>Simple Verifiable Credential</summary>
+
+```javascript
+{
+  proof: {
+    type: 'Ed25519Signature',
+    created: '2022-09-29T06:42:43.322Z',
+    proofPurpose: 'assertionMethod',
+    jws: 'sZV9x2N9jIM2_jjEhYY1MB6NN-aegFwNssTXwASbyMveDpWb3R-6MNR9a7vQPrXvHKs9CcyEZKekz2z5BT7tDA'
+  },
+  '@context': 'https://schema.arcblock.io/v0.1/context.jsonld',
+  id: 'z2iU9c4Hhyipng6tWsQpP7UudK3FFuYwJk9m4',
+  type: 'CourseCertificate',
+  issuer: {
+    id: 'z1SyWJVpXnvt7BMzLghP4DWtZ1LYpi9jHNv',
+    pk: 'zAXaskHT9gpyGQYBrxpyNicTgwegxYw9vk7B5Fe7vjVE5',
+    name: 'Online Course Platform'
+  },
+  issuanceDate: '2022-09-29T06:42:43.322Z',
+  expirationDate: undefined,
+  credentialSubject: {
+    id: 'z1SDHWEo6tnPEmt9TNPNkJ71gq4MxFjz9dd',
+    completed: { course: 'Developer Training Program' }
+  }
+}
+```
+
+</details>
+
+### Add Credential Display
+
+```javascript
+const vc = create({
+  type: "CourseCertificate",
+  issuer: {
+    name: "Online Course Platform",
+    wallet: issuer,
+  },
+  subject: {
+    id: holder.address,
+    completed: {
+      course: "Developer Training Program",
+    },
+    display: {
+      content: "https://www.example.com/api/vc/display",
+      type: "url",
+    },
+  },
+});
+
+console.log(vc);
+```
+
+<details>
+<summary>Verifiable Credential With Display</summary>
+
+```javascript
+{
+  proof: {
+    type: 'Ed25519Signature',
+    created: '2022-09-29T07:13:20.067Z',
+    proofPurpose: 'assertionMethod',
+    jws: 'a0_XNhZ6YSKHd9VU-M84Rbq6T3MH24JtNopiGy3YV5IQ4bdyXfkVUVGGkMjvFU8E_eeLSkoJDxWjcjQtYFVWAg'
+  },
+  '@context': 'https://schema.arcblock.io/v0.1/context.jsonld',
+  id: 'z2iUCFyf4WMA9BnQv9u5TEAs6NWKmCkFC4txy',
+  type: 'CourseCertificate',
+  issuer: {
+    id: 'z1krJdW3JLruSV8Nw8ieaVWqWSBYzQ6LN2e',
+    pk: 'z7p9BnM283ysvWN6jRK7VVu9MtbT4HdsmhH3GyGC51WEn',
+    name: 'Online Course Platform'
+  },
+  issuanceDate: '2022-09-29T07:13:20.067Z',
+  expirationDate: undefined,
+  credentialSubject: {
+    id: 'z1TU6BXkywEzaxqGh9rB8esvks4BG9ZCres',
+    completed: { course: 'Developer Training Program' },
+    display: { content: 'https://www.example.com/api/vc/display', type: 'url' }
+  }
+}
+```
+
+</details>
+
+### Add Credential Endpoint
+
+```javascript
+const vc = create({
+  type: "CourseCertificate",
+  issuer: {
+    name: "Online Course Platform",
+    wallet: issuer,
+  },
+  subject: {
+    id: holder.address,
+    completed: {
+      course: "Developer Training Program",
+    },
+  },
+  endpoint: "https://www.example.com/api/vc/status",
+});
+
+console.log(vc);
+```
+
+<details>
+<summary>Verifiable Credential With Endpoint</summary>
+
+```javascript
+{
+  proof: {
+    type: 'Ed25519Signature',
+    created: '2022-09-29T07:14:48.874Z',
+    proofPurpose: 'assertionMethod',
+    jws: 'SsTL-z-hUPSseObGxVLrxgT7S4rLPFMApPnTidjZeXF-OxvdbJJH93cov3YaLNJMkTwIJRbXotaQlxZ1q1dFAw'
+  },
+  '@context': 'https://schema.arcblock.io/v0.1/context.jsonld',
+  id: 'z2iTvHUv9JQRL53VkPT7Eww8tKACkvepqhFxt',
+  type: 'CourseCertificate',
+  issuer: {
+    id: 'z1YbRMTWXe5x6bPnfGtqvLvvsBFECrg4zaf',
+    pk: 'z8ofX3EwH9peYeeJ4191GUPR6fJo9u99bcjUBChrqsbfn',
+    name: 'Online Course Platform'
+  },
+  issuanceDate: '2022-09-29T07:14:48.874Z',
+  expirationDate: undefined,
+  credentialSubject: {
+    id: 'z1ib3rPz31hkMq46vGrJ59oTbRtxJmQ5KDA',
+    completed: { course: 'Developer Training Program' }
+  },
+  credentialStatus: {
+    id: 'https://www.example.com/api/vc/status',
+    type: 'NFTStatusList2021',
+    scope: 'public'
+  }
+}
+```
+
+</details>
+
+## Verify Verifiable Credential
+
+Verify that the verifiable credential is valid:
+
+- The credential is signed by a whitelist of issuers
+- The credential is owned by the holder
+- The credential has valid signature by the issuer
+- The credential is not expired
+
+Usage: `verify(vc, ownerDid, trustedIssuers)`
+
+| Param          | Type     | Description                      |
+| -------------- | -------- | -------------------------------- |
+| vc             | `object` | the verifiable credential object |
+| ownerDid       | `string` | the holder/owner did             |
+| trustedIssuers | `Array`  | the list of issuer did           |
+
+Example:
+
+```javascript
+const { verify } = require("@arcblock/vc");
+const { fromSecretKey, fromAddress } = require("@ocap/wallet");
+
+// the verifiable credential issuer,
+const issuer = fromSecretKey(process.env.VC_ISSUER_SK);
+
+// the verifiable credential holder
+const holder = fromAddress(process.env.ENV_HOLDER);
+
+// verify the credential just created or received from user
+const isValid = verify({
+  vc,
+  ownerDid: holder.address,
+  trustedIssuers: issuer.address,
+});
+```
+
+## Verify Credential Presentation
+
+When your application [requested and received](https://www.didconnect.io/playground/react/?path=/story/connect--request-verifiable-credential) a verifiable credential from the user, you must verify it before trust and use it.
+
+- The verifiable credential presentation is a special credential signed by the credential holder who claims to own the credential.
+- Usually a random challenge is generated and sent to user when requesting the presentation
+
+The basic verification process:
+
+- Ensure the presentation is signed by the verifiable credential holder
+- Ensure the presentation contains the challenge
+- Ensure the verifiable credential has a valid signature by the issuer
+- Ensure the verifiable credential is not expired
+
+Usage: `verifyPresentation(presentation, trustedIssuers, challenge)`
+
+| Param          | Type     | Description             |
+| -------------- | -------- | ----------------------- |
+| presentation   | `object` | the presentation object |
+| trustedIssuers | `Array`  | list of issuer did      |
+| challenge      | `string` | Random byte you want    |
+
+Example:
+
+```javascript
+const presentation = {
+  verifiableCredential: [
+    '{"@context":"https://schema.arcblock.io/v0.1/context.jsonld","credentialSubject":{"emailDigest":"rDh76MCmM1tEPS8Qd1xGThFJfskGP2PSO8aNqv58IhQ","id":"z1QUxXyLNRWv18ubUdcuu7iPTQdWzRy294C","method":"SHA3"},"id":"z2iUJs3vdJnE1CkaYDPAm1EEWVbNPpcEm6QhL","issuanceDate":"2020-03-30T09:56:31.175Z","issuer":{"id":"zNKrLtPXN5ur9qMkwKWMYNzGi4D6XjWqTEjQ","name":"ArcBlock.KYC.Email","pk":"zDLTrgAHr33NyKx9eD9PFUqySHjGnXpHL7upNvCySx1s4"},"proof":{"created":"2020-03-30T09:56:31.180Z","jws":"EtT4SMpmPK5AhGBstJNnymJ9lwQVC2cI-1N5O3o3iGT8gVB0lfg9oGlCGpwsuK1Zn1lLiNEYBD7eKFjwcA0rCw","proofPurpose":"assertionMethod","type":"Ed25519Signature"},"type":"EmailVerificationCredential"}',
+  ],
+  type: "Ed25519Signature",
+  proof: {
+    type: "Ed25519Signature",
+    proofPurpose: "assertionMethod",
+    pk: "zJ5bH7Jy27jSDf3AE3ntoRwNBhPRX6RXaSwTUh272jwK5",
+    jws: "ua-2kBFcn8rwNcd1BkckETnjQTW8nA5EcJ8PcXWirqB51SV9RaHvUChyFFUz_DLL_T-xlwcaQPaW0_q9Hkx3BQ",
+    created: "2020-03-31T11:48:02Z",
+  },
+  challenge: "257A2EC62ED802304F65624C73A53CAA",
+  "@context": ["https://schema.arcblock.io/v0.1/context.jsonld"],
+};
+const result = verifyPresentation({
+  presentation,
+  trustedIssuers: ["zNKrLtPXN5ur9qMkwKWMYNzGi4D6XjWqTEjQ"],
+  challenge: "257A2EC62ED802304F65624C73A53CAA",
+});
+console.log(result);
+```
