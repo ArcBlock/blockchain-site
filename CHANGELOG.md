@@ -1,3 +1,7 @@
+## 0.0.8 (October 18, 2022)
+
+- chore: update dependency module
+
 ## 0.0.7 (September 29, 2022)
 
 - chore: add vc concept doc
