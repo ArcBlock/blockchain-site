@@ -46,7 +46,8 @@ capabilities:
   component: true
 screenshots: []
 navigation:
-  - title:
+  - id: docs
+    title:
       en: Docs
       zh: 文档
     link:

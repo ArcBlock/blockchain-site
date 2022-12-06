@@ -45,11 +45,13 @@ capabilities:
   component: true
 screenshots: []
 navigation:
-  - title:
+  - id: docs
+    title:
       en: Docs
       zh: 文档
     component: blockchain-docs
-  - title:
+  - id: tools
+    title:
       en: ToolKit
       zh: 工具箱
     items:
@@ -61,7 +63,8 @@ navigation:
         link:
           en: /docs/en/toolkit/file-chain
           zh: /docs/zh/toolkit/file-chain
-  - title:
+  - id: resources
+    title:
       en: Resources
       zh: 资源
     items:
