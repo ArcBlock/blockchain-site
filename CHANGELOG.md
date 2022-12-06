@@ -1,3 +1,7 @@
+## 0.0.9 (December 06, 2022)
+
+- fix: navigation
+
 ## 0.0.8 (October 18, 2022)
 
 - chore: update dependency module
