@@ -1,8 +1,166 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: 启动测试链
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+测试链可以帮助开发人员测试他们的区块链应用程序，而不会影响主链上的交易。这对于开发人员来说是非常重要的，因为它可以让他们安全地测试应用程序的功能，并确保它们能够在真实的区块链环境中正常工作。此外，使用测试链还能帮助开发人员更好地理解区块链技术，并根据需要调整应用程序的设计。
+
+你有以下两种途径来使用测试区块链：
+
+## 使用公开测试链
+
+ArcBlock 启动了一条公开可以使用的测试链：https://beta.abtnetwork.io，连接该测试链的方法很简单：
+
+```javascript
+const Client = require("@ocap/client");
+const client = new Client("https://beta.abtnetwork.io/api/");
+```
+
+## 启动本地测试链
+
+如果你的测试环境与外网隔离，或者你期望更快的访问速度，那么你可以启动自己的测试链，具体步骤如下：
+
+- [启动 Blocklet Server](https://developer.blocklet.io/docs/zh/quick-start/blocklet-server)
+- [启动 FS Chain Manager](https://store.blocklet.dev/blocklets/z8ia2KGe3icfgRcVc9C1qCbWTBbpP2TrfPu7T)
+
+然后如下图获得本地测试链的 API 地址：
+
+![](./images/chain-endpoint.png)
+
+## 在 CI 种启动测试链
+
+> FIXME: this need to be updated
+
+如果你想在自己的持续集成环境中启用测试链，可以用下面的代码：
+
+```javascript
+require('dotenv-flow').config();
+
+const fs = require('fs');
+const path = require('path');
+const cors = require('cors');
+const range = require('lodash/range');
+const express = require('express');
+const { fromSecretKey } = require('@ocap/wallet');
+const { types } = require('@ocap/mcrypto');
+const { toBase64 } = require('@ocap/util');
+
+const Config = require('@ocap/config');
+const Resolver = require('@ocap/resolver');
+const StateDB = require('@ocap/statedb-memory');
+const IndexDB = require('@ocap/indexdb-memory');
+const { Blacklist } = require('@ocap/state');
+const { createHttpHandler, createSocketHandler } = require('@ocap/gql');
+const { fromAppDid } = require('@arcblock/did-ext');
+
+const { version } = require('@ocap/config/package.json');
+const { accounts, ports, dataDir } = require('./const-for-ci');
+
+const gasVaultCount = 1;
+const moderator = fromSecretKey(accounts.moderator.sk, 'eth');
+const gasVaults = range(0, gasVaultCount).map((x) =>
+  fromAppDid(moderator.address, moderator.secretKey, { role: types.RoleType.ROLE_ACCOUNT }, x)
+);
+const slashVault = fromAppDid(moderator.address, moderator.secretKey, { role: types.RoleType.ROLE_ACCOUNT }, 1024);
+
+const config = Config.create({
+  chainId: 'rollup-ci',
+  version,
+  moderator: {
+    address: moderator.address,
+    pk: toBase64(moderator.publicKey),
+  },
+  transaction: {
+    txFee: {
+      default: 0, // in TBA
+      'fg:t:create_asset': 0,
+      'fg:t:create_factory': 0,
+      'fg:t:create_token': 0,
+      'fg:t:create_rollup': 0,
+    },
+    txGas: {
+      price: 0,
+    },
+  },
+  vaults: {
+    txFee: moderator.address,
+    txGas: gasVaults.map((x) => x.address),
+    slashedStake: slashVault.address,
+  },
+  accounts: [
+    {
+      address: moderator.address,
+      pk: toBase64(moderator.publicKey),
+      balance: 1000000000,
+    },
+    ...gasVaults.map((x, i) => ({
+      address: x.address,
+      pk: toBase64(x.publicKey),
+      balance: 0,
+      moniker: `gas-vault-${i}`,
+    })),
+    {
+      address: slashVault.address,
+      pk: toBase64(slashVault.publicKey),
+      balance: 0,
+      moniker: 'slash-stake-vault',
+    },
+  ],
+  token: {
+    name: 'TestChainToken',
+    decimal: 18,
+    symbol: 'TBA',
+    unit: 'arc',
+    description: 'Token on ArcBlock Test Chain',
+    icon: '',
+    initialSupply: 1000000000, // 1 billion
+    totalSupply: 1000000000, // 1 billion
+    inflationRate: 0,
+    foreignToken: {
+      type: 'erc20',
+      contractAddress: '0x1fda4185e4d9125a1e75d2ffa0881d907d24942a',
+      chainType: 'eth',
+      chainName: 'hardhat',
+      chainId: 31337,
+    },
+  },
+});
+
+const statedbDir = path.join(dataDir, 'statedb');
+const indexdbDir = path.join(dataDir, 'indexdb');
+[statedbDir, indexdbDir].forEach((x) => {
+  if (fs.existsSync(x) === false) {
+    fs.mkdirSync(x, { recursive: true });
+  }
+});
+
+const statedb = new StateDB(statedbDir);
+const indexdb = new IndexDB(indexdbDir);
+
+const app = express();
+
+app.use(cors());
+
+app.head('/', (req, res) => {
+  res.status(200).send('OK');
+});
+
+statedb.onReady(() => {
+  indexdb.onReady(() => {
+    const filter = new Blacklist({ dumpPath: path.join(dataDir, 'filter.json'), dumpInterval: 1000 });
+    const resolver = new Resolver({ statedb, indexdb, config, filter });
+    const server = createSocketHandler({ indexdb, app });
+
+    app.use('/', createHttpHandler({ resolver }));
+
+    server.listen(ports.ocap, (err) => {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+
+      console.log(`test ocap chain ready at http://127.0.0.1:${ports.ocap}`);
+    });
+  });
+});
+```

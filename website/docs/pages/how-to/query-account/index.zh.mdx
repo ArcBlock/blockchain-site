@@ -3,6 +3,58 @@ layout: 'documentation'
 title: 查询账户
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+## 按地址查询账户
+
+由于每个账户都由账户地址(DID)标识，我们可以用 `getAccountState` 方法按地址查询账户状态。
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { state } = await client.getAccountState({
+  address: "zNKZ4YXc9tYZN87KP51b7psz857GBzWFMz3N",
+});
+console.log(state);
+```
+
+## 查询账户代币
+
+每个账户可以有多个[代币](/conceptual/tokens)，我们可以用 `getAccountTokens' 方法查询账户地址所拥有的代币资产。
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { tokens } = await client.getAccountTokens({
+  address: "zNKZ4YXc9tYZN87KP51b7psz857GBzWFMz3N",
+});
+console.log(tokens);
+```
+
+## 查询账户 NFT
+
+每个账户可以拥有多个 [NFT](/conceptual/nfts)，我们可以用 `listAssets` 方法查询账户地址拥有的 NFT。
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { assets } = await client.listAssets({
+  ownerAddress: "zNKZ4YXc9tYZN87KP51b7psz857GBzWFMz3N",
+});
+console.log(assets);
+```
+
+## 按代币余额查询账户
+
+我们还可以通过 `listTopAccounts` 方法按代币余额查询账户，以监测顶级代币持有者。
+
+```javascript
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const { accounts } = await client.listTopAccounts({
+  tokenAddress: "z35n6UoHSi9MED4uaQy6ozFgKPaZj2UKrurBG",
+});
+console.log(accounts);
+```

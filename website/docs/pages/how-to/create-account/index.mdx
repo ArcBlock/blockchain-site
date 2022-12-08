@@ -87,8 +87,9 @@ const hash = await client.declare({
 
 ArcBlock chain also creates accounts implicitly in the following cases so that the user does not need to send `DeclareTx` ahead:
 
-- Delegate: when the delegation receiver is not in the ledger, it's created
-- Transfer: when the receiver is not in the ledger, it's created
+- DelegateTx: when the delegation receiver is not in the ledger, it's created
+- TransferV2Tx and TransferV3Tx: when the receiver is not in the ledger, it's created
+- DepositTokenV2Tx: when the depositor is not in the ledger, it's created
 
 But there are some pros for accounts created implicitly:
 

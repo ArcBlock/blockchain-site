@@ -1,8 +1,98 @@
 ---
-layout: 'documentation'
+layout: "documentation"
 title: 创建账户
 ---
 
-:::Alert
-this page is a draft and need to be updated
-:::
+账户是存储在链上账本中的数据条目，链上账户由链下钱包控制，参见 [understanding accounts and wallets](/conceptual/wallets).
+
+有几种方法可以在账本中创建一个账户。
+
+## 用 DeclareTx 创建账户
+
+创建账户最直观的方法是向链上发送一个 `DeclareTx`，这里有几个例子。
+
+### 设置账户名称
+
+```javascript
+const { fromRandom } = require("@ocap/wallet");
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const wallet = fromRandom();
+
+const hash = await client.declare({ moniker: "chain-user", wallet });
+```
+
+The `moniker` field will be displayed on the account detail page in [chain explorer](https://beta.abtnetwork.io/explorer/accounts/z1TPn5rYHyxwbyphJ8ZoJECyVhy9tDDyEJU) like this:
+
+![](./images/detail.png)
+
+### 设置账户类型
+
+Each account can customize the [role type](/conceptual/did#roletype), [key-type](/conceptual/did#keytype) and [hash-type](/conceptual/ddi#hashtype) for its address:
+
+```javascript
+const { types } = require("@ocap/mcrypto");
+const { fromRandom } = require("@ocap/wallet");
+const Client = require("@ocap/client");
+
+const client = new Client("https://beta.abtnetwork.io/api/");
+const wallet = fromRandom({
+  role: types.RoleType.ROLE_BOT, // default to ROLE_ACCOUNT
+  key: types.KeyType.ED25519, // default to ED25519
+  hash: types.HashType.SHA3, // default to SHA3
+});
+
+const hash = await client.declare({ moniker: "customized-did", wallet });
+```
+
+### 设置关联账户
+
+You can also set the `issuer` field when creating an account, with this field you can relate multiple accounts in a public way:
+
+- `issuer` must be a valid account address
+- `issuer` must refer to an existing account in the ledger
+
+```javascript
+const hash = await client.declare({
+  moniker: "chain-user",
+  issuer: "<issuer-address>",
+  wallet,
+});
+```
+
+### 设置账户数据
+
+You can also attach some `data` with the account when creating:
+
+- `data` will be immutable upon creation
+- `data` can be retrieved with `getAccountState`
+- `data` must be structured in the [transaction data format](../../conceptual/transactions)
+- `data` size can not be too large because [transaction size limit](../../conceptual/transactions).
+
+```javascript
+const hash = await client.declare({
+  moniker: "chain-user",
+  data: {
+    type: "json",
+    value: {
+      source: "hello-arcblock-chain",
+    },
+  },
+  wallet,
+});
+```
+
+## 隐式账户创建
+
+ArcBlock chain also creates accounts implicitly in the following cases so that the user does not need to send `DeclareTx` ahead:
+
+- DelegateTx: when the delegation receiver is not in the ledger, it's created
+- TransferV2Tx and TransferV3Tx: when the receiver is not in the ledger, it's created
+- DepositTokenV2Tx: when the depositor is not in the ledger, it's created
+
+But there are some pros for accounts created implicitly:
+
+- `moniker` can not be customized
+- `issuer` can not be customized
+- `data` is empty
